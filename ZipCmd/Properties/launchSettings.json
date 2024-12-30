@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ZipCmd": {
+      "commandName": "Project",
+      "commandLineArgs": "F:\\sb\\Test\\testing -a F:\\sb\\Test\\test.txt true "
+    }
+  }
+}
