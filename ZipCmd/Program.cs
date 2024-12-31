@@ -16,8 +16,8 @@ cmdLine.Register("-l", listArg);
 
 if (cmdLine.Parse(mainArg, args))
 {
-    
-    mainArg.ZipFile = mainArg.ZipFile.EnsureExtension(".zip").GetFiles().First().ToString();
+
+    mainArg.ZipFile = mainArg.ZipFile.EnsureExtension(".zip").GetFiles(false, true).First().ToString();
     using var stream = File.Open(mainArg.ZipFile, FileMode.OpenOrCreate);
     using ZipArchiver zipArchiver = new ZipArchiver(stream);
     foreach (var option in cmdLine.Options)
