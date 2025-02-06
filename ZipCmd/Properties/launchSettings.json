@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ZipCmd": {
+      "commandName": "Project",
+      "commandLineArgs": "F:\\sb\\T*\\* -l"
+    }
+  }
+}
