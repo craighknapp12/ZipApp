@@ -29,7 +29,7 @@ if (cmdLine.Parse(mainArg, args))
             switch (option)
             {
                 case "-a":
-                    zipArchiver.Add(addArg.Filename, addArg.Override, addArg.Compression);
+                    zipArchiver.Add(addArg.Filename, addArg.EntryLevel, addArg.Override, addArg.Compression);
                     zipArchiver.Save(stream);
                     break;
                 case "-r":
@@ -68,11 +68,11 @@ static void ShowHelp(string message)
     Console.WriteLine();
     Console.WriteLine(message);
     Console.WriteLine();
-    Console.WriteLine("Command: ZipCmd.exe <ZipFilename> [-h] [-a <filePattern> <overwrite> <compression> ]  [-d <filePattern> ]  [-e <filePattern> ]  [-l <filePattern> ]");
+    Console.WriteLine("Command: ZipCmd.exe <ZipFilename> [-h] [-a <filePattern> <overwrite> <compression> <entryLevel>]  [-d <filePattern> ]  [-e <filePattern> ]  [-l <filePattern> ]");
     Console.WriteLine();
     Console.WriteLine();
     Console.WriteLine("Options:");
-    Console.WriteLine("\t-a <filePattern> <overwrite> <compression> - Adds files to the zip file");
+    Console.WriteLine("\t-a <filePattern> <overwrite> <compression> <entryLevel> - Adds files to the zip file");
     Console.WriteLine("\t-r <filePattern> - Deletes files from the zip file");
     Console.WriteLine("\t-e <filePattern> <directory> <overwrite> - Extract files from the zip file");
     Console.WriteLine("\t-h - Show Help");

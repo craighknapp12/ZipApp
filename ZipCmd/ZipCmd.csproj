@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="AbroadConcepts.CommandLine" Version="9.0.0" />
-    <PackageReference Include="AbroadConcepts.IO" Version="9.0.0" />
+    <PackageReference Include="AbroadConcepts.IO" Version="9.0.1" />
   </ItemGroup>
 
 </Project>
