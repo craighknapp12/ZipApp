@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZipCmd.Models;
+namespace ZipCmd.Services;
 internal class ZipCommand(IEnumerable<IZipAction> zipActions) : IZipCommand
 {
     public void Execute(string actionName)
     {
-        var action = zipActions.FirstOrDefault (a => a.ActionName.Equals(actionName, StringComparison.OrdinalIgnoreCase));
+        var action = zipActions.FirstOrDefault (a => a.CommandOption.Equals(actionName, StringComparison.OrdinalIgnoreCase));
         action?.Execute();
     }
 }

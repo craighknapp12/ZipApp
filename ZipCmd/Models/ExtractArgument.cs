@@ -1,6 +1,8 @@
-﻿namespace ZipCmd.Models;
+﻿using AbroadConcepts.CommandLine;
 
-public class ExtractArgument
+namespace ZipCmd.Models;
+
+public class ExtractArgument : IArgument
 {
     public string Pattern { get; set; } = string.Empty;
     public string Directory { get; set; } = string.Empty;   

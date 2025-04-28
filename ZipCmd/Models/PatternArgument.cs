@@ -1,6 +1,8 @@
-﻿namespace ZipCmd.Models;
+﻿using AbroadConcepts.CommandLine;
 
-public class PatternArgument
+namespace ZipCmd.Models;
+ 
+public class PatternArgument : IArgument
 {
     public string Pattern { get; set; } = string.Empty;
 }

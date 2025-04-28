@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZipCmd.Models;
+namespace ZipCmd.Services;
 public interface IZipCommand
 {
     void Execute(string actionName);

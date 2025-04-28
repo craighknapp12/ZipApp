@@ -1,6 +1,8 @@
-﻿namespace ZipCmd.Models;
+﻿using AbroadConcepts.CommandLine;
 
-public class MainArgument
+namespace ZipCmd.Models;
+
+public class MainArgument : IArgument
 {
     public string ZipFile { get; set; } = string.Empty;
 }
