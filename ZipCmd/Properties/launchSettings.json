@@ -2,7 +2,7 @@
   "profiles": {
     "ZipCmd": {
       "commandName": "Project",
-      "commandLineArgs": "F:\\sb\\test -a F:\\sb\\Test\\* true"
+      "commandLineArgs": "-h"
     }
   }
 }
