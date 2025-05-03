@@ -13,6 +13,8 @@ public class ZipExtract(ZipCore core) : IZipAction
     public void Execute()
     {
         var argument = core.CommandArguments.GetNextArgument<ExtractArgument>();
-        core.Archiver.Extract(argument.Directory, argument.Overwrite, argument.Pattern);
+        core.Archiver.Extract(argument.Directory, argument.Overwrite, argument.Pattern, (name) => {
+            Console.WriteLine($"Extracting {name}");
+        });
     }
 }
