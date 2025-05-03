@@ -17,7 +17,7 @@ public static class Program
         var zipCore = new ZipCore(commandArguments);
         var serviceCollection = SetupInitialServices(zipCore);
         var serviceProvider = serviceCollection.BuildServiceProvider();
-        if (args.Length > 0 && commandArguments.Parse<IZipAction>(mainArgument,  serviceProvider.GetServices<IZipAction>()))
+        if (args.Length > 0 && commandArguments.Parse<IZipAction>(mainArgument, serviceProvider.GetServices<IZipAction>()))
         {
             if (!string.IsNullOrEmpty(mainArgument.ZipFile))
             {
@@ -47,18 +47,22 @@ public static class Program
             }
             else
             {
-                    Console.WriteLine("No zip filename given.");
+                Console.WriteLine("No zip filename given.");
             }
         }
-        
-        if (showHelp) 
+        else
+        {
+            Console.WriteLine(commandArguments.Message);
+        }
+
+        if (showHelp)
         {
             var helper = serviceProvider.GetServices<IZipAction>().FirstOrDefault(s => s.GetType() == typeof(ZipHelp));
             helper?.Execute();
         }
     }
 
-    public static IServiceCollection SetupInitialServices(ZipCore  core)
+    public static IServiceCollection SetupInitialServices(ZipCore core)
     {
         return new ServiceCollection()
             .AddTransient<IZipCommand, ZipCommand>()

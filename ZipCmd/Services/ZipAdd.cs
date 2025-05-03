@@ -13,8 +13,8 @@ public class ZipAdd(ZipCore core) : IZipAction
     public void Execute()
     {
         var argument = core.CommandArguments.GetNextArgument<AddArgument>();
-        core.Archiver.Add(argument.Filename, argument.EntryLevel, argument.Override, argument.Compression, (name) => {
-            Console.WriteLine($"Adding {name}");
+        core.Archiver.Add(argument.Filename, argument.EntryLevel, argument.Override, argument.Compression, (name, status) => {
+            Console.WriteLine($"Added {name} {status}");
         });
 
         core.Archiver.Save(core.Stream);
