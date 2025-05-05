@@ -13,8 +13,8 @@ public class ZipRemove(ZipCore core) : IZipAction
     public void Execute()
     {
         var argument = core.CommandArguments.GetNextArgument<PatternArgument>();
-        core.Archiver.Remove(argument.Pattern, (name) => {
-            Console.WriteLine($"Removing {name}");
+        core.Archiver.Remove(argument.Pattern, (name, status) => {
+            Console.WriteLine($"Removing {name} {status}");
         });
 
         core.Archiver.Save(core.Stream);
