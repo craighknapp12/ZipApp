@@ -14,7 +14,7 @@ public class ZipRemove(ZipCore core) : IZipAction
     {
         var argument = core.CommandArguments.GetNextArgument<PatternArgument>();
         core.Archiver.Remove(argument.Pattern, (name, status) => {
-            Console.WriteLine($"Removing {name} {status}");
+            Console.WriteLine($"Removed {name} {status}");
         });
 
         core.Archiver.Save(core.Stream);

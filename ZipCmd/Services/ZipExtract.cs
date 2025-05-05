@@ -14,7 +14,7 @@ public class ZipExtract(ZipCore core) : IZipAction
     {
         var argument = core.CommandArguments.GetNextArgument<ExtractArgument>();
         core.Archiver.Extract(argument.Directory, argument.Overwrite, argument.Pattern, (name, status) => {
-            Console.WriteLine($"Extracting {name} {status}");
+            Console.WriteLine($"Extracted {name} {status}");
         });
     }
 }
