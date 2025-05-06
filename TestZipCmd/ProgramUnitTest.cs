@@ -16,7 +16,7 @@ public class ProgramUnitTest
         var commandLine = new CommandArguments(new string[] { "-a", "*.*" });
         var mainArg = new MainArgument();
         var zipCore = new ZipCore(commandLine);
-        var serviceCollection = Program.SetupInitialServices(zipCore);
+        var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
         using var memoryStream = new MemoryStream();
         using var zipArchiver = new ZipArchiver(memoryStream);
         serviceCollection.AddSingleton<ZipArchiver>(zipArchiver);
@@ -35,7 +35,7 @@ public class ProgramUnitTest
         var commandLine = new CommandArguments(new string[] { "-a", "*.*" });
         var mainArg = new MainArgument();
         var zipCore = new ZipCore(commandLine);
-        var serviceCollection = Program.SetupInitialServices(zipCore);
+        var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
         using var memoryStream = new MemoryStream();
         using var zipArchiver = new ZipArchiver(memoryStream);
         zipCore.Archiver = zipArchiver;
@@ -54,7 +54,7 @@ public class ProgramUnitTest
         var commandLine = new CommandArguments(new string[] { "-e", "*" });
         var mainArg = new MainArgument();
         var zipCore = new ZipCore(commandLine);
-        var serviceCollection = Program.SetupInitialServices(zipCore);
+        var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
         using var memoryStream = new MemoryStream();
         using var zipArchiver = new ZipArchiver(memoryStream);
         zipCore.Archiver = zipArchiver;
@@ -72,7 +72,7 @@ public class ProgramUnitTest
         var commandLine = new CommandArguments(new string[] {"-r", "*" });
         var mainArg = new MainArgument();
         var zipCore = new ZipCore(commandLine);
-        var serviceCollection = Program.SetupInitialServices(zipCore);
+        var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
         using var memoryStream = new MemoryStream();
         using var zipArchiver = new ZipArchiver(memoryStream);
         zipCore.Archiver = zipArchiver;
@@ -90,7 +90,7 @@ public class ProgramUnitTest
         var commandLine = new CommandArguments(new string[] {"-l", "*" });
         var mainArg = new MainArgument();
         var zipCore = new ZipCore(commandLine);
-        var serviceCollection = Program.SetupInitialServices(zipCore);
+        var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
         using var memoryStream = new MemoryStream();
         using var zipArchiver = new ZipArchiver(memoryStream);
         zipCore.Archiver = zipArchiver;
@@ -108,7 +108,7 @@ public class ProgramUnitTest
         var commandLine = new CommandArguments(new string[] {"-h"});
         var mainArg = new MainArgument();
         var zipCore = new ZipCore(commandLine);
-        var serviceCollection = Program.SetupInitialServices(zipCore);
+        var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
 
         var serviceProvider = serviceCollection.BuildServiceProvider();
         var result = commandLine.Parse<IZipAction>(mainArg, serviceProvider.GetServices<IZipAction>());
