@@ -21,15 +21,8 @@ if (args.Length > 0 && commandArguments.Parse<IZipAction>(mainArgument, serviceP
         if (filenames.Count == 1)
         {
             using var stream = File.Open(filenames[0], FileMode.OpenOrCreate);
-            using var zipArchiver = new ZipArchiver(stream);
-            zipCore.Archiver = zipArchiver;
-            zipCore.Stream = stream;
-            var zipCommand = serviceProvider.GetService<IZipCommand>();
-            foreach (var option in commandArguments.Options)
-            {
-                showHelp = false;
-                zipCommand?.Execute(option);
-            }
+            var zipCommand = ProgramHelper.OpenZipFile(zipCore, serviceProvider, stream);
+            showHelp = ProgramHelper.RunCommand(commandArguments, zipCommand);
         }
         else
         {
