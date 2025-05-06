@@ -15,7 +15,7 @@ public class ZipHelp(ZipCore core) : IZipAction
         Console.WriteLine();
         Console.WriteLine(core.CommandArguments.ShowArguments());
         Console.WriteLine();
-        Console.WriteLine("Command: ZipCmd.exe <ZipFilename> [-h] [-a <filePattern> <override> <compression> <entryLevel>]  [-d <filePattern> ]  [-e <filePattern> ]  [-l <filePattern> ]");
+        Console.WriteLine("Command: ZipCmd.exe <ZipFilename> [-h] [-a <filePattern> <override> <compression> <entryLevel>]  [-r <filePattern> ]  [-e <filePattern> <directory> <overwrite]  [-l <filePattern> ]");
         Console.WriteLine();
         Console.WriteLine();
         Console.WriteLine("Options:");
