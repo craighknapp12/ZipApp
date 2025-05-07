@@ -9,4 +9,10 @@ public class ZipCore(CommandArguments commandArguments)
     public ZipArchiver Archiver { get; set; } = null!;
     public CommandArguments CommandArguments { get; } = commandArguments;
     public Stream Stream { get; set; } = null!;
+
+    public void Update (ZipArchiver archiver, Stream stream)
+    {
+        Archiver = archiver;
+        Stream = stream;
+    }
 }
