@@ -44,4 +44,3 @@ else
     Console.WriteLine(commandArguments.Message);
     ProgramHelper.ShowHelp(serviceProvider);
 }
-

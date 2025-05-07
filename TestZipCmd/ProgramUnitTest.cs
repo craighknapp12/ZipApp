@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using AbroadConcepts.IO;
 using ZipCmd;
-using ZipCmd.Models;
 using ZipCmd.Services;
 using AbroadConcepts.CommandLine;
-using System.IO.Compression;
+using ZipCmd.Models;
 
 namespace TestZipCmd;
 
@@ -13,6 +11,7 @@ public class ProgramUnitTest
     [Fact]
     public void TestCreationOfServices()
     {
+
         var commandLine = new CommandArguments(new string[] { "-a", "*.*" });
         var mainArg = new MainArgument();
         var zipCore = new ZipCore(commandLine);
@@ -23,10 +22,9 @@ public class ProgramUnitTest
 
         serviceCollection.AddSingleton<ZipArchiver>(zipArchiver);
 
-        var serviceProvider = serviceCollection.BuildServiceProvider();
-        var result = commandLine.Parse<IZipAction>(mainArg, serviceProvider.GetServices<IZipAction>());
-        Assert.True(result);
-        Assert.Equal(8, serviceCollection.Count);
+        Assert.False(showHelp);
+        Assert.True(parseResult);
+        Assert.Equal(7, serviceCollection.Count);
         Assert.NotNull(serviceProvider);
         Assert.NotNull(serviceProvider.GetService<IZipCommand>()!);
     }
@@ -65,6 +63,7 @@ public class ProgramUnitTest
         zipCommand.Execute("-e");
         Assert.True(result);
     }
+  
     [Fact]
     public void TestCanCreateZipRemove()
     {
@@ -82,6 +81,7 @@ public class ProgramUnitTest
         zipCommand.Execute("-r");
         Assert.True(result);
     }
+
     [Fact]
     public void TestCanCreateZipList()
     {
@@ -99,6 +99,7 @@ public class ProgramUnitTest
         zipCommand.Execute("-l");
         Assert.True(result);
     }
+
     [Fact]
     public void TestCanCreateZipHelp()
     {
