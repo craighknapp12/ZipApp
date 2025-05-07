@@ -5,7 +5,6 @@ using ZipCmd;
 using ZipCmd.Models;
 using ZipCmd.Services;
 
-var showHelp = true;
 var commandArguments = new CommandArguments(args);
 var mainArgument = new MainArgument();
 
@@ -20,28 +19,28 @@ if (args.Length > 0 && commandArguments.Parse<IZipAction>(mainArgument, serviceP
 
         if (filenames.Count == 1)
         {
-            using var stream = File.Open(filenames[0], FileMode.OpenOrCreate);
-            var zipCommand = ProgramHelper.OpenZipFile(zipCore, serviceProvider, stream);
-            showHelp = ProgramHelper.RunCommand(commandArguments, zipCommand);
+            var filename = filenames[0];
+
+            var zipCommand = serviceProvider.GetService<IZipCommand>();
+            using var stream = File.Open(filename, FileMode.OpenOrCreate);
+            using var zipArchiver = new ZipArchiver(stream);
+            zipCore.Update(zipArchiver, stream);
+
+            ProgramHelper.RunCommand(commandArguments, zipCommand);
         }
         else
         {
-            showHelp = false;
             ProgramHelper.ShowMultipleFilesError(filenames);
         }
     }
     else
     {
         Console.WriteLine("No zip filename given.");
+        ProgramHelper.ShowHelp(serviceProvider);
     }
 }
 else
 {
     Console.WriteLine(commandArguments.Message);
-}
-
-if (showHelp)
-{
-    var helper = serviceProvider.GetServices<IZipAction>().FirstOrDefault(s => s.GetType() == typeof(ZipHelp));
-    helper?.Execute();
+    ProgramHelper.ShowHelp(serviceProvider);
 }

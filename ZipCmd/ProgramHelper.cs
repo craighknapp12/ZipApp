@@ -1,33 +1,31 @@
-﻿
+
 using System.Diagnostics.CodeAnalysis;
 using AbroadConcepts.CommandLine;
-using AbroadConcepts.IO;
 using Microsoft.Extensions.DependencyInjection;
 using ZipCmd.Services;
 
 namespace ZipCmd;
 public static class ProgramHelper
 {
-    public static IZipCommand? OpenZipFile(ZipCore zipCore, ServiceProvider serviceProvider, Stream stream)
+    public static void RunCommand(CommandArguments commandArguments, IZipCommand? zipCommand)
     {
-        var zipArchiver = new ZipArchiver(stream);
-        zipCore.Archiver = zipArchiver;
-        zipCore.Stream = stream;
-        return serviceProvider.GetService<IZipCommand>();
-    }
-
-    public static bool RunCommand(CommandArguments commandArguments, IZipCommand? zipCommand)
-    {
-        var showHelp = true;
+        var showHelp = false;
         foreach (var option in commandArguments.Options)
         {
-            zipCommand?.Execute(option);
-            showHelp = false;
-        }
+            if (option == "-h" && showHelp)
+            {
+                continue;
+            }
 
-        return showHelp;
+            zipCommand?.Execute(option);
+            if (option == "-h")
+            {
+                showHelp = true;
+            }
+        }
     }
 
+    [ExcludeFromCodeCoverage]
     public static void ShowMultipleFilesError(List<string> filenames)
     {
         Console.WriteLine("ZipCmd - ZipFileName pattern does not reference a single filename.\n");
@@ -49,5 +47,12 @@ public static class ProgramHelper
             .AddTransient<IZipAction, ZipRemove>()
             .AddTransient<IZipAction, ZipHelp>()
             .AddSingleton(core);
+    }
+
+    [ExcludeFromCodeCoverage]
+    public static void ShowHelp(ServiceProvider serviceProvider)
+    {
+        var helper = serviceProvider.GetServices<IZipAction>().FirstOrDefault(s => s.GetType() == typeof(ZipHelp));
+        helper?.Execute();
     }
 }
