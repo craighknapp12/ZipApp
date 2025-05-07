@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AbroadConcepts.CommandLine;
+using AbroadConcepts.IO;
+using Microsoft.Extensions.DependencyInjection;
 using ZipCmd;
 using ZipCmd.Services;
-using AbroadConcepts.CommandLine;
 using ZipCmd.Models;
 
 namespace TestZipCmd;
@@ -16,14 +17,13 @@ public class ProgramUnitTest
         var mainArg = new MainArgument();
         var zipCore = new ZipCore(commandLine);
         var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
+        var serviceProvider = serviceCollection.BuildServiceProvider();
         using var memoryStream = new MemoryStream();
         using var zipArchiver = new ZipArchiver(memoryStream);
         zipCore.Update(zipArchiver, memoryStream);
+        var result = commandLine.Parse<IZipAction>(mainArg, serviceProvider.GetServices<IZipAction>());
 
-        serviceCollection.AddSingleton<ZipArchiver>(zipArchiver);
-
-        Assert.False(showHelp);
-        Assert.True(parseResult);
+        Assert.True(result);
         Assert.Equal(7, serviceCollection.Count);
         Assert.NotNull(serviceProvider);
         Assert.NotNull(serviceProvider.GetService<IZipCommand>()!);
@@ -36,10 +36,10 @@ public class ProgramUnitTest
         var mainArg = new MainArgument();
         var zipCore = new ZipCore(commandLine);
         var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
+        var serviceProvider = serviceCollection.BuildServiceProvider();
         using var memoryStream = new MemoryStream();
         using var zipArchiver = new ZipArchiver(memoryStream);
         zipCore.Update(zipArchiver, memoryStream);
-        var serviceProvider = serviceCollection.BuildServiceProvider();
         var result = commandLine.Parse<IZipAction>(mainArg, serviceProvider.GetServices<IZipAction>());
         var zipCommand = serviceProvider.GetService<IZipCommand>()!;
         zipCommand.Execute("-a");
@@ -53,11 +53,11 @@ public class ProgramUnitTest
         var mainArg = new MainArgument();
         var zipCore = new ZipCore(commandLine);
         var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
+        var serviceProvider = serviceCollection.BuildServiceProvider();
         using var memoryStream = new MemoryStream();
         using var zipArchiver = new ZipArchiver(memoryStream);
         zipCore.Update(zipArchiver, memoryStream);
 
-        var serviceProvider = serviceCollection.BuildServiceProvider();
         var result = commandLine.Parse<IZipAction>(mainArg, serviceProvider.GetServices<IZipAction>());
         var zipCommand = serviceProvider.GetService<IZipCommand>()!;
         zipCommand.Execute("-e");
@@ -71,11 +71,11 @@ public class ProgramUnitTest
         var mainArg = new MainArgument();
         var zipCore = new ZipCore(commandLine);
         var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
+        var serviceProvider = serviceCollection.BuildServiceProvider();
         using var memoryStream = new MemoryStream();
         using var zipArchiver = new ZipArchiver(memoryStream);
         zipCore.Update(zipArchiver, memoryStream);
 
-        var serviceProvider = serviceCollection.BuildServiceProvider();
         var result = commandLine.Parse<IZipAction>(mainArg, serviceProvider.GetServices<IZipAction>());
         var zipCommand = serviceProvider.GetService<IZipCommand>()!;
         zipCommand.Execute("-r");
@@ -89,11 +89,11 @@ public class ProgramUnitTest
         var mainArg = new MainArgument();
         var zipCore = new ZipCore(commandLine);
         var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
+        var serviceProvider = serviceCollection.BuildServiceProvider();
         using var memoryStream = new MemoryStream();
         using var zipArchiver = new ZipArchiver(memoryStream);
         zipCore.Update(zipArchiver, memoryStream);
 
-        var serviceProvider = serviceCollection.BuildServiceProvider();
         var result = commandLine.Parse<IZipAction>(mainArg, serviceProvider.GetServices<IZipAction>());
         var zipCommand = serviceProvider.GetService<IZipCommand>()!;
         zipCommand.Execute("-l");
@@ -107,7 +107,6 @@ public class ProgramUnitTest
         var mainArg = new MainArgument();
         var zipCore = new ZipCore(commandLine);
         var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
-
         var serviceProvider = serviceCollection.BuildServiceProvider();
         var result = commandLine.Parse<IZipAction>(mainArg, serviceProvider.GetServices<IZipAction>());
         var zipCommand = serviceProvider.GetService<IZipCommand>()!;
