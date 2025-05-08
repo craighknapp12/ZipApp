@@ -1,6 +1,4 @@
-﻿using AbroadConcepts.CommandLine;
-using AbroadConcepts.IO;
-using ZipCmd.Models;
+﻿using ZipCmd.Models;
 
 namespace ZipCmd.Services;
 
@@ -10,12 +8,22 @@ public class ZipList(ZipCore core) : IZipAction
 
     public Type ArgumentType => typeof(PatternArgument);
 
-    public void Execute()
+    public bool Execute()
     {
-        var argument = core.CommandArguments.GetNextArgument<PatternArgument>();
-        foreach (var s in core.Archiver.GetEntries(argument.Pattern))
+        try
         {
-            Console.WriteLine(s);
+            var argument = core.CommandArguments.GetNextArgument<PatternArgument>();
+            foreach (var s in core.Archiver.GetEntries(argument.Pattern))
+            {
+                Console.WriteLine(s);
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;
         }
     }
 }

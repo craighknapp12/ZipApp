@@ -1,9 +1,8 @@
 ﻿using AbroadConcepts.CommandLine;
-using AbroadConcepts.IO;
 using Microsoft.Extensions.DependencyInjection;
 using ZipCmd;
-using ZipCmd.Services;
 using ZipCmd.Models;
+using ZipCmd.Services;
 
 namespace TestZipCmd;
 
@@ -12,37 +11,29 @@ public class ProgramUnitTest
     [Fact]
     public void TestCreationOfServices()
     {
-
-        var commandLine = new CommandArguments(new string[] { "-a", "*.*" });
-        var mainArg = new MainArgument();
-        var zipCore = new ZipCore(commandLine);
+        var zipCore = new ZipCore(new CommandArguments(new[] { "" }));
         var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
         var serviceProvider = serviceCollection.BuildServiceProvider();
-        using var memoryStream = new MemoryStream();
-        using var zipArchiver = new ZipArchiver(memoryStream);
-        zipCore.Update(zipArchiver, memoryStream);
-        var result = commandLine.Parse<IZipAction>(mainArg, serviceProvider.GetServices<IZipAction>());
 
-        Assert.True(result);
         Assert.Equal(7, serviceCollection.Count);
         Assert.NotNull(serviceProvider);
         Assert.NotNull(serviceProvider.GetService<IZipCommand>()!);
     }
 
     [Fact]
-    public void TestCanCreateZipAdd() 
+    public void TestCanCreateZipAdd()
     {
         var commandLine = new CommandArguments(new string[] { "-a", "*.*" });
-        var mainArg = new MainArgument();
-        var zipCore = new ZipCore(commandLine);
-        var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
-        var serviceProvider = serviceCollection.BuildServiceProvider();
-        using var memoryStream = new MemoryStream();
-        using var zipArchiver = new ZipArchiver(memoryStream);
-        zipCore.Update(zipArchiver, memoryStream);
-        var result = commandLine.Parse<IZipAction>(mainArg, serviceProvider.GetServices<IZipAction>());
-        var zipCommand = serviceProvider.GetService<IZipCommand>()!;
-        zipCommand.Execute("-a");
+        var result = false;
+        var runResult = false;
+
+        Setup(commandLine, (mainArg, services, stream, options, zipCore, zipCommand) =>
+        {
+            result = commandLine.Parse<IZipAction>(mainArg, services);
+            runResult = ProgramHelper.RunCommand(stream, options, zipCore, zipCommand);
+        });
+
+        Assert.True(runResult);
         Assert.True(result);
     }
 
@@ -50,67 +41,78 @@ public class ProgramUnitTest
     public void TestCanCreateZipExtract()
     {
         var commandLine = new CommandArguments(new string[] { "-e", "*" });
-        var mainArg = new MainArgument();
-        var zipCore = new ZipCore(commandLine);
-        var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
-        var serviceProvider = serviceCollection.BuildServiceProvider();
-        using var memoryStream = new MemoryStream();
-        using var zipArchiver = new ZipArchiver(memoryStream);
-        zipCore.Update(zipArchiver, memoryStream);
+        var result = false;
+        var runResult = false;
 
-        var result = commandLine.Parse<IZipAction>(mainArg, serviceProvider.GetServices<IZipAction>());
-        var zipCommand = serviceProvider.GetService<IZipCommand>()!;
-        zipCommand.Execute("-e");
+        Setup(commandLine, (mainArg, services, stream, options, zipCore, zipCommand) =>
+        {
+            result = commandLine.Parse<IZipAction>(mainArg, services);
+            runResult = ProgramHelper.RunCommand(stream, options, zipCore, zipCommand);
+        });
+
+        Assert.True(runResult);
         Assert.True(result);
     }
-  
+
     [Fact]
     public void TestCanCreateZipRemove()
     {
-        var commandLine = new CommandArguments(new string[] {"-r", "*" });
-        var mainArg = new MainArgument();
-        var zipCore = new ZipCore(commandLine);
-        var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
-        var serviceProvider = serviceCollection.BuildServiceProvider();
-        using var memoryStream = new MemoryStream();
-        using var zipArchiver = new ZipArchiver(memoryStream);
-        zipCore.Update(zipArchiver, memoryStream);
+        var commandLine = new CommandArguments(new string[] { "-r", "*" });
+        var result = false;
+        var runResult = false;
 
-        var result = commandLine.Parse<IZipAction>(mainArg, serviceProvider.GetServices<IZipAction>());
-        var zipCommand = serviceProvider.GetService<IZipCommand>()!;
-        zipCommand.Execute("-r");
+        Setup(commandLine, (mainArg, services, stream, options, zipCore, zipCommand) =>
+        {
+            result = commandLine.Parse<IZipAction>(mainArg, services);
+            runResult = ProgramHelper.RunCommand(stream, options, zipCore, zipCommand);
+        });
+
+        Assert.True(runResult);
         Assert.True(result);
     }
 
     [Fact]
     public void TestCanCreateZipList()
     {
-        var commandLine = new CommandArguments(new string[] {"-l", "*" });
-        var mainArg = new MainArgument();
-        var zipCore = new ZipCore(commandLine);
-        var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
-        var serviceProvider = serviceCollection.BuildServiceProvider();
-        using var memoryStream = new MemoryStream();
-        using var zipArchiver = new ZipArchiver(memoryStream);
-        zipCore.Update(zipArchiver, memoryStream);
+        var commandLine = new CommandArguments(new string[] { "-l", "*" });
+        var result = false;
+        var runResult = false;
 
-        var result = commandLine.Parse<IZipAction>(mainArg, serviceProvider.GetServices<IZipAction>());
-        var zipCommand = serviceProvider.GetService<IZipCommand>()!;
-        zipCommand.Execute("-l");
+        Setup(commandLine, (mainArg, services, stream, options, zipCore, zipCommand) =>
+        {
+            result = commandLine.Parse<IZipAction>(mainArg, services);
+            runResult = ProgramHelper.RunCommand(stream, options, zipCore, zipCommand);
+        });
+
+        Assert.True(runResult);
         Assert.True(result);
     }
 
     [Fact]
     public void TestCanCreateZipHelp()
     {
-        var commandLine = new CommandArguments(new string[] {"-h"});
+        var commandLine = new CommandArguments(new string[] { "-h", "-h" });
+        var result = false;
+        var runResult = false;
+
+        Setup(commandLine, (mainArg, services, stream, options, zipCore, zipCommand) =>
+        {
+            result = commandLine.Parse<IZipAction>(mainArg, services);
+            runResult = ProgramHelper.RunCommand(stream, options, zipCore, zipCommand);
+        });
+
+        Assert.True(runResult);
+        Assert.True(result);
+    }
+
+    private static void Setup(CommandArguments commandLine, Action<MainArgument, IEnumerable<IZipAction>, Stream, IEnumerable<string>, ZipCore, IZipCommand> run)
+    {
         var mainArg = new MainArgument();
         var zipCore = new ZipCore(commandLine);
         var serviceCollection = ProgramHelper.SetupInitialServices(zipCore);
         var serviceProvider = serviceCollection.BuildServiceProvider();
-        var result = commandLine.Parse<IZipAction>(mainArg, serviceProvider.GetServices<IZipAction>());
-        var zipCommand = serviceProvider.GetService<IZipCommand>()!;
-        zipCommand.Execute("-h");
-        Assert.True(result);
+        using var stream = new MemoryStream();
+
+        run.Invoke(mainArg, serviceProvider.GetServices<IZipAction>(), stream, commandLine.Options, zipCore, serviceProvider.GetService<IZipCommand>()!);
     }
 }

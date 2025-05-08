@@ -1,6 +1,4 @@
-﻿using AbroadConcepts.CommandLine;
-using AbroadConcepts.IO;
-using ZipCmd.Models;
+﻿using ZipCmd.Models;
 
 namespace ZipCmd.Services;
 
@@ -10,11 +8,24 @@ public class ZipExtract(ZipCore core) : IZipAction
 
     public Type ArgumentType => typeof(ExtractArgument);
 
-    public void Execute()
+    public bool Execute()
     {
-        var argument = core.CommandArguments.GetNextArgument<ExtractArgument>();
-        core.Archiver.Extract(argument.Directory, argument.Overwrite, argument.Pattern, (name, status) => {
-            Console.WriteLine($"Extracted {name} {status}");
-        });
+        var result = true;
+        try
+        {
+            var argument = core.CommandArguments.GetNextArgument<ExtractArgument>();
+            core.Archiver.Extract(argument.Directory, argument.Overwrite, argument.Pattern, (name, status) =>
+            {
+                Console.WriteLine($"Extracted {name} {status}");
+                result = result && status == "OK";
+            });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            result = false;
+        }
+
+        return result;
     }
 }
