@@ -1,28 +1,46 @@
 
 using System.Diagnostics.CodeAnalysis;
-using AbroadConcepts.CommandLine;
+using AbroadConcepts.IO;
 using Microsoft.Extensions.DependencyInjection;
 using ZipCmd.Services;
 
 namespace ZipCmd;
 public static class ProgramHelper
 {
-    public static void RunCommand(CommandArguments commandArguments, IZipCommand? zipCommand)
+    [ExcludeFromCodeCoverage]
+    public static bool RunCommand(string filename, IEnumerable<string> options, ZipCore zipCore, IZipCommand zipCommand)
     {
+        using var stream = File.Open(filename, FileMode.OpenOrCreate);
+        return RunCommand(stream, options, zipCore, zipCommand);
+    }
+
+    public static bool RunCommand(Stream stream, IEnumerable<string> options, ZipCore zipCore, IZipCommand zipCommand)
+    {
+        using var zipArchiver = new ZipArchiver(stream);
+        zipCore.Update(zipArchiver, stream);
+
+        return ProgramHelper.RunCommand(options, zipCommand!);
+    }
+
+    private static bool RunCommand(IEnumerable<string> options, IZipCommand zipCommand)
+    {
+        var result = true;
         var showHelp = false;
-        foreach (var option in commandArguments.Options)
+        foreach (var option in options)
         {
             if (option == "-h" && showHelp)
             {
                 continue;
             }
 
-            zipCommand?.Execute(option);
+            result = result && zipCommand.Execute(option);
             if (option == "-h")
             {
                 showHelp = true;
             }
         }
+
+        return result;
     }
 
     [ExcludeFromCodeCoverage]
