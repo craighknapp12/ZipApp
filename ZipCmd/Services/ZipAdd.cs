@@ -1,6 +1,4 @@
-﻿using AbroadConcepts.CommandLine;
-using AbroadConcepts.IO;
-using ZipCmd.Models;
+﻿using ZipCmd.Models;
 
 namespace ZipCmd.Services;
 
@@ -10,13 +8,29 @@ public class ZipAdd(ZipCore core) : IZipAction
 
     public Type ArgumentType => typeof(AddArgument);
 
-    public void Execute()
+    public bool Execute()
     {
-        var argument = core.CommandArguments.GetNextArgument<AddArgument>();
-        core.Archiver.Add(argument.Filename, argument.EntryLevel, argument.Override, argument.Compression, (name, status) => {
-            Console.WriteLine($"Added {name} {status}");
-        });
+        var result = true;
 
-        core.Archiver.Save(core.Stream);
+        try
+        {
+            var argument = core.CommandArguments.GetNextArgument<AddArgument>();
+            core.Archiver.Add(argument.Filename, argument.EntryLevel, argument.Override, argument.Compression, (name, status) =>
+            {
+                Console.WriteLine($"Added {name} {status}");
+                result = result && status == "OK";
+            });
+            if (result)
+            {
+                core.Archiver.Save(core.Stream);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            result = false;
+        }
+
+        return result;
     }
 }

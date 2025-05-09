@@ -1,7 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using AbroadConcepts.CommandLine;
-using AbroadConcepts.IO;
-using ZipCmd.Models;
+﻿using ZipCmd.Models;
 namespace ZipCmd.Services;
 
 public class ZipRemove(ZipCore core) : IZipAction
@@ -10,13 +7,28 @@ public class ZipRemove(ZipCore core) : IZipAction
 
     public Type ArgumentType => typeof(PatternArgument);
 
-    public void Execute()
+    public bool Execute()
     {
-        var argument = core.CommandArguments.GetNextArgument<PatternArgument>();
-        core.Archiver.Remove(argument.Pattern, (name, status) => {
-            Console.WriteLine($"Removed {name} {status}");
-        });
+        var result = true;
+        try
+        {
+            var argument = core.CommandArguments.GetNextArgument<PatternArgument>();
+            core.Archiver.Remove(argument.Pattern, (name, status) =>
+            {
+                Console.WriteLine($"Removed {name} {status}");
+                result = result && status == "OK";
+            });
+            if (result)
+            {
+                core.Archiver.Save(core.Stream);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            result = false;
+        }
 
-        core.Archiver.Save(core.Stream);
+        return result;
     }
 }

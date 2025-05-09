@@ -1,7 +1,4 @@
-﻿using AbroadConcepts.CommandLine;
-using ZipCmd.Models;
-
-namespace ZipCmd.Services;
+﻿namespace ZipCmd.Services;
 
 public class ZipHelp(ZipCore core) : IZipAction
 {
@@ -9,7 +6,7 @@ public class ZipHelp(ZipCore core) : IZipAction
 
     public Type ArgumentType => null!;
 
-    public void Execute()
+    public bool Execute()
     {
         Console.WriteLine("ZipCmd - Command line to operate on a zip file.");
         Console.WriteLine();
@@ -32,5 +29,6 @@ public class ZipHelp(ZipCore core) : IZipAction
         Console.WriteLine("\tFastest");
         Console.WriteLine("\tNoCompression");
         Console.WriteLine("\tSmallestSize");
+        return true;
     }
 }
