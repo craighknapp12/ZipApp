@@ -11,9 +11,11 @@ The File matching pattern routines return fully qualified names. In order to inj
 to the zip file and customize the directory structure as it will show in the zip files.  A directory in the zip file container will end with "/" character.   For example, you may have a test.zip that when you run
 "ZipCmd test -l" that it will show:
 
+```
 test.txt 
 Folder/test2.txt
 Folder/
+```
 
 Note: "Folder/" is a directory called Folder and there is a file in it by the name of test2.txt.
 
@@ -23,11 +25,12 @@ ZipCmd test -a C:\SomeDir\SubDir\Folder\test2.txt true SmallestSize 1 -a C:\Some
 
 ZipCmd test -l
 
-You will have zip file called test.zip and contains
+You will have zip file called test.zip and contains:
 
+```
 Folder/test2.txt
-
 SubDir/Folder/test2.txt
+```
 
 Note: The "1" in the entry level say go up 1 level so Folder is included in name while "2" goes up two levels so includes SubDir in entry name.
 
