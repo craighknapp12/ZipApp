@@ -4,7 +4,8 @@ Provides zip file operation from a command line.
 ```
 Command: ZipCmd.exe <ZipFilename> 
 	[-a <filePattern> <override> <compression> <entryLevel>] 
-	[-e <filePattern> <directory> <overwrite] [-l <filePattern> ]
+	[-e <filePattern> <directory> <overwrite] 
+	[-l <filePattern> ]
 	[-h] 
 	[-r <filePattern> ]  
 ```
@@ -13,6 +14,7 @@ Reference Guide:
 -a : Adds files or directories into the ZipFilename
 -e : Extracts files or directory entries and places them at the provided directory location.
 -h : Show Help content (Also displays when there are errors)
+-l : List all or matching pattern file entries
 -r : Removes a file or directory entry from the zip file.
 ```
 
