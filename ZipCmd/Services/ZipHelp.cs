@@ -13,14 +13,14 @@ public class ZipHelp(ZipCore core) : IZipAction
         Console.WriteLine("Currant passed arguments:");
         Console.WriteLine($"\t{core.CommandArguments.ShowArguments()}");
         Console.WriteLine();
-        Console.WriteLine("Command: ZipCmd.exe <ZipFilename> [-h] [-a <filePattern> <override> <compression> <entryLevel>]  [-r <filePattern> ]  [-e <filePattern> <directory> <overwrite]  [-l <filePattern> ]");
+        Console.WriteLine("Command: ZipCmd.exe <ZipFilename> [-h] [-a <filePattern> <override> <compression> <entryLevel> <directory> ] [-e <filePattern> <directory> <overwrite]  [-l <filePattern> ] [-r <filePattern> ]");
         Console.WriteLine();
         Console.WriteLine("Options:");
-        Console.WriteLine("\t-a <filePattern> <override> <compression> <entryLevel> - Adds files to the zip file");
-        Console.WriteLine("\t-r <filePattern> - Deletes files from the zip file");
+        Console.WriteLine("\t-a <filePattern> <override> <compression> <entryLevel> <directory> - Adds files to the zip file");
         Console.WriteLine("\t-e <filePattern> <directory> <overwrite> - Extract files from the zip file");
         Console.WriteLine("\t-h - Show Help");
         Console.WriteLine("\t-l <filePattern> - List files in the zip file");
+        Console.WriteLine("\t-r <filePattern> - Deletes files from the zip file");
         Console.WriteLine();
         Console.WriteLine("\t** options can be passed multiple times and are processed left to right");
         Console.WriteLine();

@@ -15,7 +15,7 @@ public class ZipAdd(ZipCore core) : IZipAction
         try
         {
             var argument = core.CommandArguments.GetNextArgument<AddArgument>();
-            core.Archiver.Add(argument.Filename, argument.EntryLevel, argument.Override, argument.Compression, (name, status) =>
+            core.Archiver.Add(argument.Filename,  argument.EntryLevel, argument.Override, argument.Compression, argument.Directory, (name, status) =>
             {
                 Console.WriteLine($"Added {name} {status}");
                 result = result && status == "OK";
