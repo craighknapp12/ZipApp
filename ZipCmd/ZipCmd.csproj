@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="AbroadConcepts.CommandLine" Version="9.0.6" />
-    <PackageReference Include="AbroadConcepts.IO" Version="9.0.6" />
+    <PackageReference Include="AbroadConcepts.IO" Version="9.0.7" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
   </ItemGroup>
 

@@ -9,4 +9,5 @@ public partial class AddArgument : IArgument
     public bool Override { get; set; } = false;
     public CompressionLevel Compression { get; set; } = CompressionLevel.NoCompression;
     public int EntryLevel { get; set; } = 0;
+    public string Directory { get; set; } = string.Empty;
 }

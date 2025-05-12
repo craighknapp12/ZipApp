@@ -3,7 +3,7 @@ Provides zip file operation from a command line.
 
 ```
 Command: ZipCmd.exe <ZipFilename> 
-	[-a <filePattern> <override> <compression> <entryLevel>] 
+	[-a <filePattern> <override> <compression> <entryLevel> <directory>] 
 	[-e <filePattern> <directory> <overwrite] 
 	[-l <filePattern> ]
 	[-h] 
