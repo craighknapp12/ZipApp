@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Zipper": {
+      "commandName": "Project",
+      "commandLineArgs": ".\\test"
+    }
+  }
+}
