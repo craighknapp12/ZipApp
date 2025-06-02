@@ -10,8 +10,15 @@ public static class ProgramHelper
     [ExcludeFromCodeCoverage]
     public static bool RunCommand(string filename, IEnumerable<string> options, ZipCore zipCore, IZipCommand zipCommand)
     {
+        bool isNew = !File.Exists(filename);
         using var stream = File.Open(filename, FileMode.OpenOrCreate);
-        return RunCommand(stream, options, zipCore, zipCommand);
+        bool result = RunCommand(stream, options, zipCore, zipCommand);
+        if (isNew)
+        {
+            zipCore.Archiver.Save(stream);
+        }
+
+        return result;
     }
 
     public static bool RunCommand(Stream stream, IEnumerable<string> options, ZipCore zipCore, IZipCommand zipCommand)
