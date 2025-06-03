@@ -83,7 +83,7 @@ public class Zip: IZip, IDisposable
     public void ExecuteOpen (string fileName)
     {
         var isNew = !File.Exists(fileName);
-        _zipStream = File.Open(fileName, FileMode.OpenOrCreate);
+        _zipStream = File.Open(fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
         _zipArchiver = new ZipArchiver(_zipStream);
         if (isNew)
         {
@@ -135,7 +135,7 @@ public class Zip: IZip, IDisposable
             var fileName = _viewDialog.GetSaveFile();
             if (!string.IsNullOrEmpty(fileName))
             {
-                using var stream = File.Open(fileName, FileMode.OpenOrCreate);
+                using var stream = File.Open(fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite);
                 _zipArchiver.Save(stream);
                 FileName = fileName;
                 IsDirty = false;

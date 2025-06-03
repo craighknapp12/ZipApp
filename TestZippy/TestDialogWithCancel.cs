@@ -32,6 +32,11 @@ public class TestDialogWithCancel : IViewDialog
 
     }
 
+    public void ShowAdd()
+    {
+        throw new NotImplementedException();
+    }
+
     public void ShowError(string message)
     {
         ShowErrorCount++;

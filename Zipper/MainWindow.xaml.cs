@@ -13,7 +13,7 @@ namespace Zipper;
 public partial class MainWindow : Window
 {
 
-    private IZip _zip = null!;
+    private IZip _zip;
 
     public MainWindow()
     {
@@ -24,8 +24,9 @@ public partial class MainWindow : Window
         _zip = new Zip(viewDialog);
         _zip.Load(Environment.GetCommandLineArgs().Skip(1).ToArray());
 
-        var zipMenuViewModel = new ZipMenuViewModel (_zip, () => 
+        var zipMenuViewModel = new ZipMenuViewModel (_zip, (in int result) => 
         {
+            DialogResult = result == 0;
             this.Close(); 
         });
         var zipViewModel = new ZipViewModel(_zip);

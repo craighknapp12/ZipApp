@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Zipper.ViewModels;
 
 namespace Zipper.Views;
 /// <summary>
@@ -9,5 +10,12 @@ public partial class AboutDialog : Window
     public AboutDialog()
     {
         InitializeComponent();
+        DataContext = new AboutDialogViewModel((in bool result) => CloseIt(result));
+    }
+
+    public void CloseIt (bool result)
+    {
+        this.DialogResult = result; 
+        this.Close();
     }
 }

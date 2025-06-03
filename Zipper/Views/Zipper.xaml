@@ -21,11 +21,11 @@
             x:Name="ZipTree"
             Grid.Row="0"
             Grid.Column="0"
-            HorizontalAlignment="Stretch" />
+            HorizontalAlignment="Stretch" Width="Auto" />
         <GridSplitter
             Grid.Row="0"
             Grid.Column="1"
-            Width="10"
+            Width="1"
             VerticalAlignment="Stretch"
             ShowsPreview="True" />
         <ListView

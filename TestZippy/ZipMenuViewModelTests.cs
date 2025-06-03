@@ -12,7 +12,7 @@ public class ZipMenuViewModelTests
         var testDialog = new TestDialog();
         IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, () => { closeCount++; });
+        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
         zipMenuViewModel.AboutCommand.Execute(null);
 
         Assert.Equal(1, testDialog.ShowAboutCount);
@@ -26,13 +26,12 @@ public class ZipMenuViewModelTests
         var testDialog = new TestDialog();
         IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, () => { closeCount++; });
+        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
         zipMenuViewModel.ExitCommand.Execute(null);
 
-        Assert.Equal(1, testDialog.GetSaveFileCount);
-        Assert.Equal(1, testDialog.ShouldSaveCount);
+        Assert.Equal(0, testDialog.GetSaveFileCount);
+        Assert.Equal(0, testDialog.ShouldSaveCount);
         Assert.Equal(1, closeCount);
-
     }
     [Fact]
     public void TestCloseWithDirtyState()
@@ -42,7 +41,7 @@ public class ZipMenuViewModelTests
         var testDialog = new TestDialog();
         IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, () =>
+        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) =>
         {
             closeCount++;
         });
@@ -59,7 +58,7 @@ public class ZipMenuViewModelTests
         var testDialog = new TestDialogWithCancel();
         IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, () => { closeCount++; });
+        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
         zipMenuViewModel.ExitCommand.Execute(null);
 
         Assert.Equal(1, testDialog.GetSaveFileCount);
@@ -76,7 +75,7 @@ public class ZipMenuViewModelTests
         var testDialog = new TestDialog();
         IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, () => { closeCount++; });
+        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
         Assert.NotNull(zipMenuViewModel);
         Assert.Equal(0, testDialog.GetSaveFileCount);
         Assert.Equal(0, testDialog.GetOpenFileCount);
@@ -91,7 +90,7 @@ public class ZipMenuViewModelTests
         var testDialog = new TestDialog();
         IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, () => { closeCount++; });
+        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
         zipMenuViewModel.NewCommand.Execute(null);
 
         Assert.NotNull(zipMenuViewModel);
@@ -110,7 +109,7 @@ public class ZipMenuViewModelTests
         var testDialog = new TestDialog();
         IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, () => { closeCount++; });
+        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
         zipMenuViewModel.OpenCommand.Execute(null);
         Assert.NotNull(zipMenuViewModel);
 
@@ -124,7 +123,7 @@ public class ZipMenuViewModelTests
         var testDialog = new TestDialog();
         IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, () => { closeCount++; });
+        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
         zipMenuViewModel.OpenCommand.Execute(null);
         Assert.NotNull(zipMenuViewModel);
 
@@ -139,7 +138,7 @@ public class ZipMenuViewModelTests
         var testDialog = new TestDialogWithCancel();
         IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, () => { closeCount++; });
+        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
         // Set zip change
         zipMenuViewModel.OpenCommand.Execute(null);
         Assert.NotNull(zipMenuViewModel);
@@ -155,7 +154,7 @@ public class ZipMenuViewModelTests
         var testDialog = new TestDialog();
         IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, () => { closeCount++; });
+        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
         // Set zip change
         zipMenuViewModel.SaveCommand.Execute(null);
         Assert.NotNull(zipMenuViewModel);
@@ -172,7 +171,7 @@ public class ZipMenuViewModelTests
         var testDialog = new TestDialog();
         IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, () => { closeCount++; });
+        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
         // Set zip change
         zipMenuViewModel.SaveCommand.Execute(null);
         Assert.NotNull(zipMenuViewModel);
@@ -189,7 +188,7 @@ public class ZipMenuViewModelTests
         var testDialog = new TestDialog();
         IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, () => { closeCount++; });
+        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
         // Set zip change
         zipMenuViewModel.SaveAsCommand.Execute(null);
         Assert.NotNull(zipMenuViewModel);
@@ -205,7 +204,7 @@ public class ZipMenuViewModelTests
         var testDialog = new TestDialog();
         IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, () => { closeCount++; });
+        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
         // Set zip change
         zipMenuViewModel.SaveAsCommand.Execute(null);
         Assert.Equal(1, testDialog.GetSaveFileCount);
@@ -220,7 +219,7 @@ public class ZipMenuViewModelTests
         var testDialog = new TestDialog();
         IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, () => { closeCount++; });
+        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
         // Set zip change
         zipMenuViewModel.SaveCommand.Execute(null);
         Assert.Equal(1, testDialog.GetSaveFileCount);

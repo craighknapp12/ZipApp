@@ -5,6 +5,9 @@
     <Compile Update="Views\AboutDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\AddDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\ZipMenu.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

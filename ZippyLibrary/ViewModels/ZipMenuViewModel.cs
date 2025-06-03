@@ -4,10 +4,7 @@ using ZippyLibrary.Interfaces;
 
 namespace ZippyLibrary.ViewModels;
 
-
-public delegate void CloseMethod();
-
-public class ZipMenuViewModel(IZip zip, CloseMethod closeMethod) 
+public class ZipMenuViewModel(IZip zip, CloseMethod<int> closeMethod) 
 {
 
     public ICommand NewCommand => new RelayCommand(ExecuteNew);
@@ -40,7 +37,7 @@ public class ZipMenuViewModel(IZip zip, CloseMethod closeMethod)
     private void ExecuteExit()
     {
         zip.ExecuteSave();
-        closeMethod.Invoke();
+        closeMethod.Invoke(0);
     }
 
     private void ExecuteAbout()
