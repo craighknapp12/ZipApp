@@ -1,6 +1,6 @@
 ﻿using AbroadConcepts.CommandLine;
 
-namespace ZipCmd.Models;
+namespace ZippyLibrary.Models;
 
 public class MainArgument : IArgument
 {

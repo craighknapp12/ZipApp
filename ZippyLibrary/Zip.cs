@@ -1,8 +1,8 @@
 ﻿using AbroadConcepts.CommandLine;
 using AbroadConcepts.IO;
 
-using ZipCmd.Models;
 using ZippyLibrary.Interfaces;
+using ZippyLibrary.Models;
 
 namespace ZippyLibrary;
 public class Zip: IZip, IDisposable
@@ -14,6 +14,13 @@ public class Zip: IZip, IDisposable
     public bool IsDirty { get; set; }
     private bool _isDisposed;
     private readonly IViewDialog _viewDialog;
+
+    public string Action { get; set; } = string.Empty;
+
+    public double ActionValue { get; set; }
+
+    public double MaxValue { get; set; } 
+
     public Zip(IViewDialog viewDialog)
     {
         _viewDialog = viewDialog;
@@ -82,6 +89,7 @@ public class Zip: IZip, IDisposable
 
     public void ExecuteOpen (string fileName)
     {
+        Action = "Loading";
         var isNew = !File.Exists(fileName);
         _zipStream = File.Open(fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
         _zipArchiver = new ZipArchiver(_zipStream);
@@ -90,6 +98,10 @@ public class Zip: IZip, IDisposable
             IsDirty = true;
             ExecuteSave(true);
         }
+        Action = string.Empty;
+        ActionValue = 0;
+        MaxValue = 1;
+
     }
 
     public bool ExecuteSave(bool overrideCheck = false)
@@ -104,6 +116,7 @@ public class Zip: IZip, IDisposable
         {
             try
             {
+                Action = "Saving";
                 if (string.IsNullOrEmpty(FileName))
                 {
                     ExecuteSaveAs();
@@ -119,8 +132,12 @@ public class Zip: IZip, IDisposable
                 _viewDialog.ShowError(ex.Message);
                 return false;
             }
-
-
+            finally
+            {
+                ActionValue = 0;
+                MaxValue = 10;
+                Action = string.Empty;
+            }
 
             return true;
         }
@@ -179,5 +196,65 @@ public class Zip: IZip, IDisposable
     public void ShowAbout()
     {
         _viewDialog.ShowAbout();
+    }
+
+    public bool Add(AddZipContent addContent)
+    {
+
+        try
+        {
+            MaxValue = addContent.Filename.GetFiles().ToList().Count;
+            ActionValue = 0;
+
+            _zipArchiver.Add(addContent.Filename, addContent.EntryLevel, addContent.Override, addContent.Compression, addContent.Directory, (fileName, message) =>
+            {
+                Action = $"Added {fileName}";
+                if (!string.IsNullOrEmpty(message))
+                {
+                    _viewDialog.ShowError(message);
+                }
+                ActionValue++;
+            });
+            IsDirty = true;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _viewDialog.ShowError(ex.Message);
+            return false;
+        }
+        finally
+        {
+            ActionValue = 0;
+            Action = string.Empty;
+        }
+    }
+    public bool Remove(RemoveZipContent removeContent)
+    {
+
+        try
+        {
+            MaxValue = removeContent.Entries.Count;
+            ActionValue = 0;
+
+            foreach(var entry in removeContent.Entries)
+            {
+                ActionValue++;
+                Action = $"Remove {entry}";
+                _zipArchiver.Remove(entry);
+            }
+            IsDirty = true;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _viewDialog.ShowError(ex.Message);
+            return false;
+        }
+        finally
+        {
+            ActionValue = 0;
+            Action = string.Empty;
+        }
     }
 }
