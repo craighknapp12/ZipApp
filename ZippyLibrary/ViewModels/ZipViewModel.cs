@@ -8,7 +8,6 @@ public class ZipViewModel(IZip Zip) :  ObservableObject
 {
     public string FileName => Zip.FileName.Substring(Zip.FileName.LastIndexOf('\\')+1);
 
-
     public string Action => "Ready";
 
     private double maxValue;

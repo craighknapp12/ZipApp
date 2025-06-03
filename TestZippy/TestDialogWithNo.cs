@@ -32,6 +32,11 @@ public class TestDialogWithNo : IViewDialog
         ShowAboutCount++;
     }
 
+    public void ShowAdd()
+    {
+        throw new NotImplementedException();
+    }
+
     public void ShowError(string message)
     {
         ShowErrorCount++;

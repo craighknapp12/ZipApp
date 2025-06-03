@@ -41,6 +41,16 @@ internal class ViewDialog(Window window) : IViewDialog
         return result == MessageBoxResult.Yes;
     }
 
+    public void ShowAdd()
+    {
+        var addDialog = new AddDialog();
+        addDialog.Owner = window;
+        if (addDialog.ShowDialog() == true)
+        {
+
+        }
+    }
+
     public void ShowAbout()
     {
         var aboutDialog = new AboutDialog();
