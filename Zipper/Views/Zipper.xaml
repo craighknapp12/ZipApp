@@ -4,15 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Zipper.Views"
+    xmlns:local1="clr-namespace:System.Reflection.PortableExecutable;assembly=System.Reflection.Metadata"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:ZippyLibrary.ViewModels;assembly=ZippyLibrary"
+    d:DataContext="{d:DesignInstance Type=viewmodels:ZipViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="AUTO" />
-            <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="50*" />
+            <ColumnDefinition Width="AUTO" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="100*" />
@@ -21,17 +24,69 @@
             x:Name="ZipTree"
             Grid.Row="0"
             Grid.Column="0"
-            HorizontalAlignment="Stretch" Width="Auto" />
+            HorizontalAlignment="Stretch">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <!--<Setter Property="HasUnrealizedChildern" Value="True" />-->
+                </Style>
+            </TreeView.ItemContainerStyle>
+            <TreeView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image
+                            Width="32"
+                            Height="32"
+                            Source="{Binding ImageSource}" />
+                        <TextBlock Margin="0,0,10,0" />
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            VerticalAlignment="Center"
+                            Text="{Binding Text}" />
+                    </StackPanel>
+                </DataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
         <GridSplitter
             Grid.Row="0"
             Grid.Column="1"
-            Width="1"
+            MinWidth="2"
             VerticalAlignment="Stretch"
+            Background="White"
+            ResizeBehavior="BasedOnAlignment"
             ShowsPreview="True" />
-        <ListView
+        <DataGrid
             x:Name="ZipList"
             Grid.Row="0"
             Grid.Column="2"
-            HorizontalAlignment="Stretch" />
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            AutoGenerateColumns="False"
+            CanUserReorderColumns="True"
+            CanUserResizeColumns="True"
+            ContextMenu="{Binding DataGridContextMenuu}"
+            GridLinesVisibility="None"
+            HeadersVisibility="Column"
+            HorizontalScrollBarVisibility="Auto"
+            ItemsSource="{Binding DataGridFiles}"
+            Sorting="ZipList_Sorting">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding ElementName}" Header="Filename" />
+                <DataGridTextColumn Binding="{Binding DateModified}" Header="Date Modified" />
+                <DataGridTextColumn Binding="{Binding Type}" Header="Type" />
+                <DataGridTextColumn Binding="{Binding Size}" Header="Size" />
+            </DataGrid.Columns>
+            <DataGrid.Resources>
+                <ContextMenu x:Key="ContextMenu">
+                    <MenuItem
+                        x:Name="AddContextMenu"
+                        Command="{Binding AddCommand}"
+                        Header="Add" />
+                    <MenuItem
+                        x:Name="veRemoContextMenu"
+                        Command="{Binding RemoveCommand}"
+                        Header="Remove" />
+                </ContextMenu>
+            </DataGrid.Resources>
+        </DataGrid>
     </Grid>
 </UserControl>

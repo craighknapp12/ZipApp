@@ -37,23 +37,23 @@
             </StatusBarItem>
             <Separator Grid.Column="1" />
             <StatusBarItem Grid.Column="2">
-                <TextBlock Text="{Binding Path=FileName, Mode=OneWay }" />
+                <TextBlock Text="{Binding Path=PartialFileName, Mode=OneWay}" />
             </StatusBarItem>
             <Separator Grid.Column="3" />
             <StatusBarItem Grid.Column="4">
-                <TextBlock Text="{Binding Path=Action, Mode=OneWay }" />
+                <TextBlock Text="{Binding Path=ActionDisplay, Mode=OneWay}" />
             </StatusBarItem>
             <Separator Grid.Column="5" />
             <StatusBarItem Grid.Column="6">
                 <ProgressBar
                     Width="90"
                     Height="16"
-                    Maximum="{Binding Path=MaxValue, Mode=OneWay }"
-                    Value="{Binding Path=ActionValue, Mode=OneWay }" />
+                    Maximum="{Binding Path=MaxActionValue, Mode=OneWay}"
+                    Value="{Binding Path=ActionValue, Mode=OneWay}" />
             </StatusBarItem>
             <Separator Grid.Column="7" />
             <StatusBarItem Grid.Column="8">
-                <CheckBox IsChecked="{Binding Path=IsDirty, Mode=OneWay }" IsEnabled="False" />
+                <CheckBox IsChecked="{Binding Path=IsDirty, Mode=OneWay}" IsEnabled="False" />
             </StatusBarItem>
 
         </StatusBar>

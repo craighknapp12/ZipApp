@@ -2,7 +2,7 @@
 
 namespace Zipper.ViewModels;
 
-public class MainWindowViewModel : ObservableObject
+public class MainWindowViewModel 
 {
     public string Title { get; } = "Zipper";
 }

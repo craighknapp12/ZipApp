@@ -1,4 +1,5 @@
 ﻿using ZippyLibrary.Interfaces;
+using ZippyLibrary.Models;
 namespace TestZippy;
 
 public class TestDialogWithCancel : IViewDialog
@@ -8,10 +9,21 @@ public class TestDialogWithCancel : IViewDialog
     public int ShowAboutCount { get; set; } = 0;
     public int ShouldSaveCount { get; set; } = 0;
     public int ShowErrorCount { get; set; } = 0;
+
+    public AddZipContent GetAddInformation()
+    {
+        throw new NotImplementedException();
+    }
+
     public string GetOpenFile()
     {
         GetOpenFileCount++;
         return Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "test.zip";
+    }
+
+    public RemoveZipContent GetRemoveInformation()
+    {
+        throw new NotImplementedException();
     }
 
     public string GetSaveFile()
@@ -30,11 +42,6 @@ public class TestDialogWithCancel : IViewDialog
     {
         ShowAboutCount++;
 
-    }
-
-    public void ShowAdd()
-    {
-        throw new NotImplementedException();
     }
 
     public void ShowError(string message)
