@@ -14,6 +14,6 @@ public partial class ZipStatus : UserControl
 
     internal void SetViewModel(ZipViewModel zipViewModel)
     {
-        DataContext = zipViewModel;
+        this.DataContext = zipViewModel;
     }
 }

@@ -13,4 +13,8 @@ public partial class Zipper : UserControl
         InitializeComponent();
     }
 
+    private void ZipList_Sorting(object sender, DataGridSortingEventArgs e)
+    {
+
+    }
 }

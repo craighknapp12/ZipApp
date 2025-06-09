@@ -24,18 +24,68 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Label Content="Files" Grid.Column="0" Grid.Row="0" />
-        <TextBox x:Name="Files" HorizontalAlignment="Left" Width="300" Grid.Column="1" Grid.Row="0" />
-        <Label Content="Override"  Grid.Column="0" Grid.Row="1" />
-        <CheckBox VerticalAlignment="Center"  Grid.Column="1" Grid.Row="1" IsChecked="{Binding Overwrite}" />
-        <Label Content="Compression" Grid.Column="0" Grid.Row="2" />
-        <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding GetCompressionValues}" />
-        <Label Content="Entry Level" Grid.Column="0" Grid.Row="3" />
-        <Label Content="Directory" Grid.Column="0" Grid.Row="4" />
-        <TextBox x:Name="Directory" HorizontalAlignment="Left" Width="300" Grid.Column="1" Grid.Row="4" />
-        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="5" >
-            <Button Content="OK" Margin="10"  Command="{Binding OKCommand}" />
-            <Button Content="Cancel" Margin="10"  Command="{Binding CancelCommand}" />
+        <Label
+            Grid.Row="0"
+            Grid.Column="0"
+            Content="Files" />
+        <TextBox
+            x:Name="Files"
+            Grid.Row="0"
+            Grid.Column="1"
+            Width="300"
+            HorizontalAlignment="Left" />
+        <Label
+            Grid.Row="1"
+            Grid.Column="0"
+            Content="Override" />
+        <CheckBox
+            x:Name="Override"
+            Grid.Row="1"
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Overwrite}" />
+        <Label
+            Grid.Row="2"
+            Grid.Column="0"
+            Content="Compression" />
+        <ComboBox
+            x:Name="Compression"
+            Grid.Row="2"
+            Grid.Column="1"
+            ItemsSource="{Binding GetCompressionValues}" />
+        <Label
+            Grid.Row="3"
+            Grid.Column="0"
+            Content="Entry Level" />
+        <TextBox
+            x:Name="EntryLevel"
+            Grid.Row="3"
+            Grid.Column="1"
+            Width="300"
+            HorizontalAlignment="Left" />
+
+        <Label
+            Grid.Row="4"
+            Grid.Column="0"
+            Content="Directory" />
+        <TextBox
+            x:Name="Directory"
+            Grid.Row="4"
+            Grid.Column="1"
+            Width="300"
+            HorizontalAlignment="Left" />
+        <StackPanel
+            Grid.Row="5"
+            Grid.Column="1"
+            Orientation="Horizontal">
+            <Button
+                Margin="10"
+                Command="{Binding OKCommand}"
+                Content="OK" />
+            <Button
+                Margin="10"
+                Command="{Binding CancelCommand}"
+                Content="Cancel" />
         </StackPanel>
     </Grid>
 </Window>

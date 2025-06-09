@@ -1,6 +1,9 @@
-﻿using System.Windows;
+﻿using System.CodeDom;
+using System.IO.Compression;
+using System.Windows;
 using Microsoft.Win32;
 using ZippyLibrary.Interfaces;
+using ZippyLibrary.Models;
 
 namespace Zipper.Views;
 internal class ViewDialog(Window window) : IViewDialog
@@ -41,16 +44,6 @@ internal class ViewDialog(Window window) : IViewDialog
         return result == MessageBoxResult.Yes;
     }
 
-    public void ShowAdd()
-    {
-        var addDialog = new AddDialog();
-        addDialog.Owner = window;
-        if (addDialog.ShowDialog() == true)
-        {
-
-        }
-    }
-
     public void ShowAbout()
     {
         var aboutDialog = new AboutDialog();
@@ -61,5 +54,24 @@ internal class ViewDialog(Window window) : IViewDialog
     public void ShowError(string message)
     {
         MessageBox.Show(message, "Zippy Error", MessageBoxButton.OK, MessageBoxImage.Error);
+    }
+
+    public AddZipContent GetAddInformation()
+    {
+        var addDialog = new AddDialog();
+        addDialog.Owner = window;
+        return new AddZipContent
+        {
+            Filename = addDialog.Files.Text,
+            Compression = (CompressionLevel)Enum.Parse(typeof(CompressionLevel), addDialog.Compression.Text),
+            Directory = addDialog.Directory.Text,
+            EntryLevel = int.Parse(addDialog.EntryLevel.Text),
+            Override = addDialog.Override.IsChecked ?? false
+        };
+    }
+
+    public RemoveZipContent GetRemoveInformation()
+    {
+        throw new NotImplementedException();
     }
 }

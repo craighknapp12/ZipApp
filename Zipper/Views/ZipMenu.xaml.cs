@@ -2,9 +2,6 @@
 using ZippyLibrary.ViewModels;
 
 namespace Zipper.Views;
-/// <summary>
-/// Interaction logic for ZipMenu.xaml
-/// </summary>
 public partial class ZipMenu : UserControl
 {
     public ZipMenu()
@@ -12,9 +9,9 @@ public partial class ZipMenu : UserControl
         InitializeComponent();
     }
 
-    internal void SetViewModel(ZipMenuViewModel zipMenuViewModel)
+    internal void SetViewModel(ZipViewModel zipViewModel)
     {
-        DataContext = zipMenuViewModel;
+        this.DataContext = zipViewModel;
     }
 
 

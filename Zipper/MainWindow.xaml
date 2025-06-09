@@ -14,7 +14,11 @@
     mc:Ignorable="d">
 
     <DockPanel>
-        <views:ZipMenu x:Name="menu" DockPanel.Dock="Top" />
+        <views:ZipMenu
+            x:Name="menu"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            DockPanel.Dock="Top" />
         <views:ZipStatus x:Name="status" DockPanel.Dock="Bottom" />
         <views:Zipper x:Name="zipper" />
     </DockPanel>

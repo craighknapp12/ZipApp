@@ -1,21 +1,18 @@
 ﻿using System.IO.Compression;
-using ZippyLibrary;
-using ZippyLibrary.Interfaces;
 using ZippyLibrary.Models;
 using ZippyLibrary.ViewModels;
 namespace TestZippy;
 
-public class ZipMenuViewModelTests
+public class ZipViewModelTests
 {
     [Fact]
     public void TestAbout()
     {
         var closeCount = 0;
         var testDialog = new TestDialog();
-        IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
-        zipMenuViewModel.AboutCommand.Execute(null);
+        var zipViewModel = new ZipViewModel(testDialog, (in int result) => { closeCount++; });
+        zipViewModel.AboutCommand.Execute(null);
 
         Assert.Equal(1, testDialog.ShowAboutCount);
     }
@@ -26,10 +23,9 @@ public class ZipMenuViewModelTests
         var closeCount = 0;
 
         var testDialog = new TestDialog();
-        IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
-        zipMenuViewModel.ExitCommand.Execute(null);
+        var zipViewModel = new ZipViewModel(testDialog, (in int result) => { closeCount++; });
+        zipViewModel.ExitCommand.Execute(null);
 
         Assert.Equal(0, testDialog.GetSaveFileCount);
         Assert.Equal(0, testDialog.ShouldSaveCount);
@@ -42,22 +38,22 @@ public class ZipMenuViewModelTests
         var closeCount = 0;
 
         var testDialog = new TestDialog();
-        IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) =>
+        var zipViewModel = new ZipViewModel(testDialog, (in int result) =>
         {
             closeCount++;
         });
-        zip.Add(new AddZipContent
+
+        zipViewModel.Add(new AddZipContent
         {
-            Filename = "*.cs",
+            Filename = "*.dll",
             Override = true,
             Compression = CompressionLevel.SmallestSize,
             EntryLevel = 0,
             Directory = string.Empty
         });
 
-        zipMenuViewModel.ExitCommand.Execute(null);
+        zipViewModel.ExitCommand.Execute(null);
 
         Assert.Equal(1, testDialog.GetSaveFileCount);
         Assert.Equal(1, testDialog.ShouldSaveCount);
@@ -70,11 +66,10 @@ public class ZipMenuViewModelTests
     {
         var closeCount = 0;
         var testDialog = new TestDialogWithCancel();
-        IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
-        zipMenuViewModel.ExitCommand.Execute(null);
-        zip.Add(new AddZipContent
+        var zipViewModel = new ZipViewModel(testDialog, (in int result) => { closeCount++; });
+        zipViewModel.ExitCommand.Execute(null);
+        zipViewModel.Add(new AddZipContent
         {
             Filename = "*.cs",
             Override = true,
@@ -96,10 +91,9 @@ public class ZipMenuViewModelTests
     {
         var closeCount = 0;
         var testDialog = new TestDialog();
-        IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
-        Assert.NotNull(zipMenuViewModel);
+        var zipViewModel = new ZipViewModel(testDialog, (in int result) => { closeCount++; });
+        Assert.NotNull(zipViewModel);
         Assert.Equal(0, testDialog.GetSaveFileCount);
         Assert.Equal(0, testDialog.GetOpenFileCount);
         Assert.Equal(0, testDialog.ShowAboutCount);
@@ -112,13 +106,12 @@ public class ZipMenuViewModelTests
     {
         var closeCount = 0;
         var testDialog = new TestDialog();
-        IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
-        zipMenuViewModel.NewCommand.Execute(null);
-        zip.Add(new AddZipContent
+        var zipViewModel = new ZipViewModel(testDialog, (in int result) => { closeCount++; });
+        zipViewModel.NewCommand.Execute(null);
+        zipViewModel.Add(new AddZipContent
         {
-            Filename = "*.cs",
+            Filename = "*.dll",
             Override = true,
             Compression = CompressionLevel.SmallestSize,
             EntryLevel = 0,
@@ -126,8 +119,7 @@ public class ZipMenuViewModelTests
         });
 
 
-        Assert.NotNull(zipMenuViewModel);
-        Assert.True(zip.IsDirty);
+        Assert.True(zipViewModel.IsDirty);
 
         Assert.Equal(0, testDialog.GetSaveFileCount);
         Assert.Equal(0, testDialog.GetOpenFileCount);
@@ -142,13 +134,12 @@ public class ZipMenuViewModelTests
     {
         var closeCount = 0;
         var testDialog = new TestDialog();
-        IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
-        zipMenuViewModel.OpenCommand.Execute(null);
-        Assert.NotNull(zipMenuViewModel);
+        var zipViewModel = new ZipViewModel(testDialog, (in int result) => { closeCount++; });
+        zipViewModel.OpenCommand.Execute(null);
+        Assert.NotNull(zipViewModel);
 
-        Assert.False(zip.IsDirty);
+        Assert.False(zipViewModel.IsDirty);
         Assert.Equal(1, testDialog.GetOpenFileCount);
     }
 
@@ -157,19 +148,18 @@ public class ZipMenuViewModelTests
     {
         var closeCount = 0;
         var testDialog = new TestDialog();
-        IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
-        zip.Add(new AddZipContent
+        var zipViewModel = new ZipViewModel(testDialog, (in int result) => { closeCount++; });
+        zipViewModel.Add(new AddZipContent
         {
-            Filename = "*.cs",
+            Filename = "*.dll",
             Override = true,
             Compression = CompressionLevel.SmallestSize,
             EntryLevel = 0,
             Directory = string.Empty
         });
-        zipMenuViewModel.OpenCommand.Execute(null);
-        Assert.NotNull(zipMenuViewModel);
+        zipViewModel.OpenCommand.Execute(null);
+        Assert.NotNull(zipViewModel);
 
         Assert.Equal(1, testDialog.GetSaveFileCount);
         Assert.Equal(1, testDialog.GetOpenFileCount);
@@ -181,19 +171,18 @@ public class ZipMenuViewModelTests
     {
         var closeCount = 0;
         var testDialog = new TestDialogWithCancel();
-        IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
-        zip.Add(new AddZipContent
+        var zipViewModel = new ZipViewModel(testDialog, (in int result) => { closeCount++; });
+        zipViewModel.Add(new AddZipContent
         {
-            Filename = "*.cs",
+            Filename = "*.dll",
             Override = true,
             Compression = CompressionLevel.SmallestSize,
             EntryLevel = 0,
             Directory = string.Empty
         });
-        zipMenuViewModel.OpenCommand.Execute(null);
-        Assert.NotNull(zipMenuViewModel);
+        zipViewModel.OpenCommand.Execute(null);
+        Assert.NotNull(zipViewModel);
 
         Assert.Equal(1, testDialog.GetSaveFileCount);
         Assert.Equal(1, testDialog.ShouldSaveCount);
@@ -206,12 +195,11 @@ public class ZipMenuViewModelTests
     {
         var closeCount = 0;
         var testDialog = new TestDialog();
-        IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
+        var zipViewModel = new ZipViewModel(testDialog, (in int result) => { closeCount++; });
         // Set zip change
-        zipMenuViewModel.SaveCommand.Execute(null);
-        Assert.NotNull(zipMenuViewModel);
+        zipViewModel.SaveCommand.Execute(null);
+        Assert.NotNull(zipViewModel);
 
         Assert.Equal(0, testDialog.GetSaveFileCount);
         Assert.Equal(0, testDialog.ShouldSaveCount);
@@ -224,21 +212,19 @@ public class ZipMenuViewModelTests
     {
         var closeCount = 0;
         var testDialog = new TestDialog();
-        IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
-        zip.Add(new AddZipContent
+        var zipViewModel = new ZipViewModel(testDialog, (in int result) => { closeCount++; });
+        zipViewModel.Add(new AddZipContent
         {
-            Filename = "*.cs",
+            Filename = "*.dll",
             Override = true,
             Compression = CompressionLevel.SmallestSize,
             EntryLevel = 0,
             Directory = string.Empty
         });
         // Set zip change
-        Assert.True(zip.IsDirty);
-        zipMenuViewModel.SaveCommand.Execute(null);
-        Assert.NotNull(zipMenuViewModel);
+        Assert.True(zipViewModel.IsDirty);
+        zipViewModel.SaveCommand.Execute(null);
         Assert.Equal(1, testDialog.GetSaveFileCount);
         Assert.Equal(0, testDialog.ShowAboutCount);
         Assert.Equal(0, testDialog.ShouldSaveCount);
@@ -252,12 +238,10 @@ public class ZipMenuViewModelTests
     {
         var closeCount = 0;
         var testDialog = new TestDialog();
-        IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
-        Assert.False(zip.IsDirty);
-        zipMenuViewModel.SaveAsCommand.Execute(null);
-        Assert.NotNull(zipMenuViewModel);
+        var zipViewModel = new ZipViewModel(testDialog, (in int result) => { closeCount++; });
+        Assert.False(zipViewModel.IsDirty);
+        zipViewModel.SaveAsCommand.Execute(null);
         Assert.Equal(1, testDialog.GetSaveFileCount);
         Assert.Equal(0, testDialog.ShouldSaveCount);
         Assert.Equal(0, testDialog.ShowErrorCount);
@@ -269,19 +253,18 @@ public class ZipMenuViewModelTests
     {
         var closeCount = 0;
         var testDialog = new TestDialog();
-        IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
-        zip.Add(new AddZipContent
+        var zipViewModel = new ZipViewModel(testDialog, (in int result) => { closeCount++; });
+        zipViewModel.Add(new AddZipContent
         {
-            Filename = "*.cs",
+            Filename = "*.dll",
             Override = true,
             Compression = CompressionLevel.SmallestSize,
             EntryLevel = 0,
             Directory = string.Empty
         });
-        Assert.True(zip.IsDirty);
-        zipMenuViewModel.SaveAsCommand.Execute(null);
+        Assert.True(zipViewModel.IsDirty);
+        zipViewModel.SaveAsCommand.Execute(null);
         Assert.Equal(1, testDialog.GetSaveFileCount);
         Assert.Equal(0, testDialog.ShouldSaveCount);
         Assert.Equal(0, testDialog.ShowErrorCount);
@@ -293,20 +276,19 @@ public class ZipMenuViewModelTests
     {
         var closeCount = 0;
         var testDialog = new TestDialog();
-        IZip zip = new Zip(testDialog);
 
-        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
-        zip.Add(new AddZipContent
+        var zipViewModel = new ZipViewModel(testDialog, (in int result) => { closeCount++; });
+        zipViewModel.Add(new AddZipContent
         {
-            Filename = "*.cs",
+            Filename = "*.dll",
             Override = true,
             Compression = CompressionLevel.SmallestSize,
             EntryLevel = 0,
             Directory = string.Empty
         });
-        Assert.True(zip.IsDirty);
-        zipMenuViewModel.SaveCommand.Execute(null);
-        Assert.False(zip.IsDirty);
+        Assert.True(zipViewModel.IsDirty);
+        zipViewModel.SaveCommand.Execute(null);
+        Assert.False(zipViewModel.IsDirty);
         Assert.Equal(1, testDialog.GetSaveFileCount);
         Assert.Equal(0, testDialog.ShouldSaveCount);
         Assert.Equal(0, testDialog.ShowErrorCount);
@@ -318,20 +300,19 @@ public class ZipMenuViewModelTests
     {
         var closeCount = 0;
         var testDialog = new TestDialog();
-        IZip zip = new Zip(testDialog);
-        var zipMenuViewModel = new ZipMenuViewModel(zip, (in int result) => { closeCount++; });
-        zip.Add(new AddZipContent
+        var zipViewModel = new ZipViewModel(testDialog, (in int result) => { closeCount++; });
+        zipViewModel.Add(new AddZipContent
         {
-            Filename = "*.cs",
+            Filename = "*.dll",
             Override = true,
             Compression = CompressionLevel.SmallestSize,
             EntryLevel = 0,
             Directory = string.Empty
         });
-        Assert.True(zip.IsDirty);
-        zip.Remove(new RemoveZipContent (new List<string> { "*.cs" }));
-        Assert.True(zip.IsDirty);
-        zipMenuViewModel.SaveCommand.Execute(null);
+        Assert.True(zipViewModel.IsDirty);
+        zipViewModel.Remove(new RemoveZipContent (new List<string> { "*.dll" }));
+        Assert.True(zipViewModel.IsDirty);
+        zipViewModel.SaveCommand.Execute(null);
 
         Assert.Equal(1, testDialog.GetSaveFileCount);
         Assert.Equal(0, testDialog.GetOpenFileCount);
